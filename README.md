@@ -12,9 +12,10 @@ Stable
 
 - @aturner-epcc ([https://github.com/aturner-epcc](https://github.com/aturner-epcc))
 
-## Overview
+**Important:** Please do not contact the benchmark maintainers directly with any questions.
+All questions on the benchmark must be submitted via the procurement response mechanism.
 
-### Software
+## Software
 
 - [BabelStream](https://github.com/UoB-HPC/BabelStream)
 
@@ -47,6 +48,9 @@ Offerors are permitted to modify the benchmark in the following ways.
 **Concurrency & Affinity**
 
 - The bidder may change the kernel launch configurations, type of memory management (e.g. CUDA managed memory, separate host and device pointers etc.).
+
+Any modifications must be fully documented (e.g., as a pull request, diff or patch file)
+and reported with the benchmark results.
 
 ### Manual build
 
@@ -159,40 +163,7 @@ The following arguments will typically be used to modify its runtime behaviour:
   memory tests). This option can be used to ensure all accelerator devices on 
   a node are tested.
 
-Example run lines from testing on the [IsambardAI](https://docs.isambard.ac.uk/specs/#system-specifications-isambard-ai-phase-2) system
-
-**CPU memory (OpenMP):**
-
-```bash
-# Execute using all 288 CPU cores
-export OMP_NUM_THREADS=288
-export OMP_PLACES=cores
-srun --hint=nomultithread --distribution=block:block \
-     --ntasks=1 --cpus-per-task=288 \
-     omp-stream --arraysize 65536000000
-```
-
-**GPU memory (CUDA):**
-
-```bash
-export OMP_NUM_THREADS=1
-
-devices="0 1 2 3"
-
-for device in $devices
-do
-   echo
-   echo "Running on device $device"
-   echo "===================="
-   echo
-   cuda-stream --device $device --arraysize 65536000000
-done
-```
-
-All the kernels are validated at the end of their execution;
-no explicit validation test is needed.
-
-We supply example job submission scripts:
+We supply example job submission scripts from testing on the [IsambardAI](https://docs.isambard.ac.uk/specs/#system-specifications-isambard-ai-phase-2) system:
 
 - [IsambardAI CPU bandwidth](run_cpu_isambardai.sh)
 - [IsambardAI GPU bandwidth](run_cuda_isambardai.sh)
